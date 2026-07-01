@@ -1,16 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 
-# ==============================================================================
-# TRABALHO DE PROGRAMACAO APLICADA
-# Autores: Huney e Eline
-#
-# Comentarios explicando o metodo usado:
-# - Decidimos nao usar Programacao Orientada a Objetos (POO) porque nao aprendemos direito a usar "self" e classes.
-# - Em vez disso, usamos variaveis globais e guardamos todos os desenhos em uma lista de tuplas de tamanhos variados.
-# - As formas de Huney guardam borda e preenchimento. As formas de Eline guardam apenas a cor da linha.
-# ==============================================================================
-
 # --- VARIAVEIS GLOBAIS GIGANTES ---
 # [Huney e Eline]: Lista que guarda todos os desenhos definitivos feitos no canvas.
 desenhos_salvos = []
