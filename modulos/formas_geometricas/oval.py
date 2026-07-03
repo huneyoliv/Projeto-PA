@@ -9,7 +9,7 @@ class Oval(FiguraSolida):
     y_fim: float
 
     def desenhar(self, canvas) -> None:
-        canvas.create_oval(
+        self.id = canvas.create_oval(
             self.x_inicio, self.y_inicio, self.x_fim, self.y_fim,
             outline=self.cor_borda, fill=self.cor_preenchimento
         )

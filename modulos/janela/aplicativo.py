@@ -20,18 +20,21 @@ class AplicativoDesenho:
         self.x_inicio = 0
         self.y_inicio = 0
         self.pontos_rabisco_temp = []
+        self.id_borracha_temp = None
         
         # Inicializa a interface visual
         self.ui = Interface(
             root,
             self.muda_ferramenta, self.muda_cor_borda, self.muda_cor_preenchimento,
-            self.ao_clicar, self.ao_arrastar, self.ao_soltar
+            self.ao_clicar, self.ao_arrastar, self.ao_soltar,
+            self.ao_mover, self.ao_sair
         )
         self._atualiza_status()
 
     def muda_ferramenta(self, f):
         self.tipo_desenho_atual = f
         self._atualiza_status()
+        self._limpar_indicador_borracha()
 
     def muda_cor_borda(self, c):
         self.cor_borda_atual = c
@@ -49,11 +52,22 @@ class AplicativoDesenho:
         )
 
     def ao_clicar(self, event):
+        if self.tipo_desenho_atual == "borracha":
+            itens = self.ui.canvas.find_overlapping(event.x - 3, event.y - 3, event.x + 3, event.y + 3)
+            if itens:
+                id_para_remover = itens[-1]
+                self.desenhos_salvos = [fig for fig in self.desenhos_salvos if fig.id != id_para_remover]
+                self._redesenhar_salvos()
+            return
+
         self.x_inicio = event.x
         self.y_inicio = event.y
         self.pontos_rabisco_temp = [(event.x, event.y)]
 
     def ao_arrastar(self, event):
+        if self.tipo_desenho_atual == "borracha":
+            return
+        
         # Limpa rascunhos anteriores e mostra feedback visual do desenho em progresso
         self._redesenhar_salvos()
         canvas = self.ui.canvas
@@ -79,6 +93,9 @@ class AplicativoDesenho:
                 canvas.create_line(self.pontos_rabisco_temp, fill=self.cor_borda_atual, dash=(4, 2))
 
     def ao_soltar(self, event):
+        if self.tipo_desenho_atual == "borracha":
+            return
+        
         # Fabrica e salva a figura se for válida
         figura = self._criar_figura(event.x, event.y)
         if figura is not None and figura.eh_valida():
@@ -104,7 +121,33 @@ class AplicativoDesenho:
             return Rabisco(x_inicio=ki, y_inicio=yi, pontos=self.pontos_rabisco_temp, cor=bc)
         return None
 
+    def ao_mover(self, event):
+        # Exibe círculo vermelho tracejado sob o cursor se ferramenta for borracha
+        if self.tipo_desenho_atual == "borracha":
+            canvas = self.ui.canvas
+            r = 6
+            if self.id_borracha_temp is None:
+                self.id_borracha_temp = canvas.create_oval(
+                    event.x - r, event.y - r, event.x + r, event.y + r,
+                    outline="red", width=1, dash=(2, 2)
+                )
+            else:
+                canvas.coords(self.id_borracha_temp, event.x - r, event.y - r, event.x + r, event.y + r)
+                canvas.tag_raise(self.id_borracha_temp)
+        else:
+            self._limpar_indicador_borracha()
+
+    def ao_sair(self, event):
+        # Apaga o indicador ao retirar o cursor da área de desenho
+        self._limpar_indicador_borracha()
+
+    def _limpar_indicador_borracha(self):
+        if self.id_borracha_temp is not None:
+            self.ui.canvas.delete(self.id_borracha_temp)
+            self.id_borracha_temp = None
+
     def _redesenhar_salvos(self):
         self.ui.canvas.delete("all")
+        self.id_borracha_temp = None
         for figura in self.desenhos_salvos:
             figura.desenhar(self.ui.canvas)
