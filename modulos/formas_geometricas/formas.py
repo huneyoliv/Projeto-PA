@@ -6,7 +6,7 @@ import math
 
 @dataclass
 class Figura(ABC):
-    """Classe base para todas as figuras geométricas."""
+    """Classe base para todas figuras geométricas"""
     x_inicio: float
     y_inicio: float
 
@@ -28,7 +28,9 @@ class Figura(ABC):
 
 @dataclass
 class FiguraSolida(Figura, ABC):
-    """Classe para figuras com borda e preenchimento (Herança)."""
+    """Classe intermediária responsável por injetar propriedades visuais nas figuras.
+    Implementa validação rigorosa de tipo para os atributos cor_borda e cor_preenchimento
+    utilizando o interceptador de atributos _setattr_."""
     cor_borda: str
     cor_preenchimento: str
 
