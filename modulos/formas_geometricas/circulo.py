@@ -8,7 +8,7 @@ class Circulo(FiguraSolida):
     raio: float
 
     def desenhar(self, canvas) -> None:
-        canvas.create_oval(
+        self.id = canvas.create_oval(
             self.x_inicio - self.raio, self.y_inicio - self.raio,
             self.x_inicio + self.raio, self.y_inicio + self.raio,
             outline=self.cor_borda, fill=self.cor_preenchimento

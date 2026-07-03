@@ -9,7 +9,7 @@ class Retangulo(FiguraSolida):
     y_fim: float
 
     def desenhar(self, canvas) -> None:
-        canvas.create_rectangle(
+        self.id = canvas.create_rectangle(
             self.x_inicio, self.y_inicio, self.x_fim, self.y_fim,
             outline=self.cor_borda, fill=self.cor_preenchimento
         )

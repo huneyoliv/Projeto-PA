@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
 import math
 
@@ -8,6 +8,7 @@ class Figura(ABC):
     # Ponto de origem da figura
     x_inicio: float
     y_inicio: float
+    id: int = field(default=None, init=False)
 
     @abstractmethod
     def desenhar(self, canvas) -> None:
