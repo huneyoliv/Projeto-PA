@@ -1,15 +1,7 @@
 from tkinter import *
 from modulos.formas_geometricas.formas import Retangulo, Oval, Circulo
 
-# Para manter o projeto flexível, tentamos importar o trabalho da Eline se ele existir.
-# Se ainda não existir, o programa avisa de forma amigável!
-try:
-    from modulos.linhas_e_rabiscos.linhas import Linha, Rabisco
-except ImportError:
-    # Classes temporárias "mock" caso Eline ainda não tenha implementado.
-    # Isso evita que o programa quebre para os outros integrantes do grupo!
-    Linha = None
-    Rabisco = None
+from modulos.linhas_e_rabiscos.linhas import Linha, Rabisco
 
 
 class AplicativoDesenho:
@@ -182,28 +174,20 @@ class AplicativoDesenho:
                 cor_preenchimento=self.cor_preenchimento_atual
             )
         elif self.tipo_desenho_atual == "linha":
-            if Linha is not None:
-                # Quando a Eline terminar de implementar, o código usará a classe dela automaticamente!
-                figura_nova = Linha(
-                    x_inicio=self.x_inicio,
-                    y_inicio=self.y_inicio,
-                    x_fim=event.x,
-                    y_fim=event.y,
-                    cor=self.cor_borda_atual
-                )
-            else:
-                print("Módulo 'Linha' ainda não foi implementado pela Eline!")
+            figura_nova = Linha(
+                x_inicio=self.x_inicio,
+                y_inicio=self.y_inicio,
+                x_fim=event.x,
+                y_fim=event.y,
+                cor=self.cor_borda_atual
+            )
         elif self.tipo_desenho_atual == "rabisco":
-            if Rabisco is not None:
-                # Lógica para integrar a classe Rabisco da Eline
-                figura_nova = Rabisco(
-                    x_inicio=self.x_inicio,
-                    y_inicio=self.y_inicio,
-                    pontos=self.pontos_rabisco_temp,
-                    cor=self.cor_borda_atual
-                )
-            else:
-                print("Módulo 'Rabisco' ainda não foi implementado pela Eline!")
+            figura_nova = Rabisco(
+                x_inicio=self.x_inicio,
+                y_inicio=self.y_inicio,
+                pontos=self.pontos_rabisco_temp,
+                cor=self.cor_borda_atual
+            )
 
         # Validação e salvamento
         if figura_nova is not None and figura_nova.eh_valida():
