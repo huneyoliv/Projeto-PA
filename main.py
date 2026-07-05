@@ -1,8 +1,10 @@
-from tkinter import Tk
-from modulos.janela.aplicativo import AplicativoDesenho
+from modelo.desenho import Desenho
+from visao.janelaPaint import JanelaPaint
+from controlador.controladorPaint import ControladorPaint
 
 if __name__ == "__main__":
-    # Ponto de entrada do programa que cria a janela e inicia o loop principal
-    root = Tk()
-    AplicativoDesenho(root)
-    root.mainloop()
+    # Inicializa o MVC puro conforme o padrão do professor
+    visao = JanelaPaint()
+    desenho = Desenho()
+    controlador = ControladorPaint(desenho, visao)
+    visao.root.mainloop()

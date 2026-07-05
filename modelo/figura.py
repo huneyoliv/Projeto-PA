@@ -5,17 +5,17 @@ import math
 
 @dataclass
 class Figura(ABC):
-    # Ponto de origem da figura
+    # Origem do desenho
     x_inicio: float
     y_inicio: float
     id: int = field(default=None, init=False)
 
     @abstractmethod
-    def desenhar(self, canvas) -> None:
+    def desenha(self, canvas, dash=()) -> None:
         pass
 
     @abstractmethod
-    def eh_valida(self) -> bool:
+    def vazia(self) -> bool:
         pass
 
     @staticmethod

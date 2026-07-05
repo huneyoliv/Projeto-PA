@@ -1,26 +1,24 @@
 from dataclasses import dataclass
-from modulos.formas_geometricas.figura_solida import FiguraSolida
-from modulos.formas_geometricas.figura import Figura
+from modelo.figura_solida import FiguraSolida
+from modelo.figura import Figura
 
 
 @dataclass
 class Circulo(FiguraSolida):
     raio: float
 
-    def desenhar(self, canvas) -> None:
+    def desenha(self, canvas, dash=()) -> None:
         self.id = canvas.create_oval(
             self.x_inicio - self.raio, self.y_inicio - self.raio,
             self.x_inicio + self.raio, self.y_inicio + self.raio,
-            outline=self.cor_borda, fill=self.cor_preenchimento
+            outline=self.cor_borda, fill=self.cor_preenchimento, dash=dash
         )
 
-    def eh_valida(self) -> bool:
-        # Raio precisa ser maior que zero
-        return self.raio > 0
+    def vazia(self) -> bool:
+        return self.raio <= 0
 
     @classmethod
     def a_partir_de_centro_e_ponto(cls, cx: float, cy: float, px: float, py: float, cor_borda: str, cor_preenchimento: str):
-        # Calcula raio a partir de outro ponto
         raio_calculado = Figura.calcular_distancia(cx, cy, px, py)
         return cls(
             x_inicio=cx, y_inicio=cy,
