@@ -11,10 +11,6 @@ class Figura(ABC):
     id: int = field(default=None, init=False)
 
     @abstractmethod
-    def desenha(self, canvas, dash=()) -> None:
-        pass
-
-    @abstractmethod
     def vazia(self) -> bool:
         pass
 
