@@ -9,8 +9,9 @@ class Linha(FiguraLinear):#herda da classe mae FiguraLinear
     y_fim: float
 
     def vazia(self) -> bool:
-        # Retorna True se a linha for apenas um ponto
-        return self.x_inicio == self.x_fim and self.y_inicio == self.y_fim
+        # Retorna True se a linha for apenas um ponto ou muito curta
+        from modelo.figura import Figura
+        return Figura.calcular_distancia(self.x_inicio, self.y_inicio, self.x_fim, self.y_fim) < 5
 
     @classmethod   #pertence a classe e nao ao objeto 
     def a_partir_de_pontos(

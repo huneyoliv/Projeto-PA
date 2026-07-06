@@ -31,6 +31,10 @@ class ControladorPaint:
         self.visao.cor_preenchimento_var.trace_add("write", lambda *a: self._atualiza_status())
         self._atualiza_status()
 
+        # Associa os botões de ação ao controlador
+        self.visao.btn_desfazer.config(command=self.desfazer)
+        self.visao.btn_limpar.config(command=self.limpar_tudo)
+
     def _atualiza_status(self):
         f = self.visao.tipo_figura_var.get().upper()
         b = self.visao.cor_borda_var.get().upper()
@@ -122,3 +126,12 @@ class ControladorPaint:
 
     def ao_sair(self, event):
         self.visao.limpar_indicador_borracha()
+
+    def desfazer(self):
+        if self.desenho.figuras:
+            self.desenho.figuras.pop()
+            self.visao.atualizar_tela(self.desenho)
+
+    def limpar_tudo(self):
+        self.desenho.figuras.clear()
+        self.visao.atualizar_tela(self.desenho)

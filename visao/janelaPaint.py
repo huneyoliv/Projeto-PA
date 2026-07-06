@@ -122,7 +122,7 @@ class JanelaPaint:
             self.id_borracha_temp = None
 
     def obter_figura_sob_cursor(self, x, y):
-        itens = self.canvas.find_overlapping(x - 3, y - 3, x + 3, y + 3)
+        itens = self.canvas.find_overlapping(x - 8, y - 8, x + 8, y + 8)
         if itens:
             id_para_remover = itens[-1]
             if id_para_remover == self.id_borracha_temp and len(itens) > 1:
