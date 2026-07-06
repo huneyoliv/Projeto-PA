@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 import math
-
+from modulos.cores.visual import ValidadorCores
 # --- CLASSES ABSTRATAS ---
 
 @dataclass
@@ -28,24 +28,16 @@ class Figura(ABC):
 
 @dataclass
 class FiguraSolida(Figura, ABC):
-    """Classe intermediária responsável por injetar propriedades visuais nas figuras.
-    Implementa validação rigorosa de tipo para os atributos cor_borda e cor_preenchimento
-    utilizando o interceptador de atributos _setattr_."""
+    """Classe para figuras com borda e preenchimento (Herança)."""
     cor_borda: str
     cor_preenchimento: str
 
-    def __setattr__(self, nome, valor):
-        # Validação/Encapsulamento
-        if nome == "cor_borda":
-            if not isinstance(valor, str):
-                raise TypeError("A cor da borda deve ser texto.")
-            if valor.strip() == "":
-                valor = "black"
-        elif nome == "cor_preenchimento":
-            if not isinstance(valor, str):
-                raise TypeError("A cor de preenchimento deve ser texto.")
+    def _setattr_(self, nome, valor):
+        # Delega a responsabilidade de validação para o módulo (THÉO)
+        if nome in ["cor_borda", "cor_preenchimento"]:
+            valor = ValidadorCores.validar(nome, valor)
         
-        super().__setattr__(nome, valor)
+        super()._setattr_(nome, valor)
 
 
 # --- CLASSES CONCRETAS (HUNEY) ---
