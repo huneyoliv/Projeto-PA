@@ -8,17 +8,6 @@ class Linha(FiguraLinear):#herda da classe mae FiguraLinear
     x_fim: float
     y_fim: float
 
-    def desenha(self, canvas, dash=()) -> None: #pra criar figuras dentro canvas
-        self.id = canvas.create_line(  #id ajuda a registrar e achar rapido
-            self.x_inicio, #ponto inicial 
-            self.y_inicio,
-            self.x_fim,   #ponto final
-            self.y_fim,
-            fill=self.cor,
-            width=2,
-            dash=dash  #desenha linhas tracejadas
-        )
-
     def vazia(self) -> bool:
         # Retorna True se a linha for apenas um ponto
         return self.x_inicio == self.x_fim and self.y_inicio == self.y_fim
