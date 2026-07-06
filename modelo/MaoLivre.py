@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from modelo.figura_linear import FiguraLinear
+from modelo.FiguraLinear import FiguraLinear
 
 
 @dataclass
@@ -22,7 +22,8 @@ class MaoLivre(FiguraLinear):
                 dash=dash
             )
 
-    def vazia(self) -> bool: #verifica se existee
+    def vazia(self) -> bool:
+        # Retorna True se o rabisco tiver menos de dois pontos
         return len(self.pontos) < 2
 
     def adicionar_ponto(self, x: float, y: float) -> None:

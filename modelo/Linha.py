@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from modelo.figura_linear import FiguraLinear
+from modelo.FiguraLinear import FiguraLinear
 
 
 @dataclass
@@ -14,17 +14,14 @@ class Linha(FiguraLinear):#herda da classe mae FiguraLinear
             self.y_inicio,
             self.x_fim,   #ponto final
             self.y_fim,
-            self.y_fim,
             fill=self.cor,
             width=2,
             dash=dash  #desenha linhas tracejadas
         )
 
-    def vazia(self) -> bool:  #verifica se a linha realmente existe
-        return (
-            self.x_inicio == self.x_fim and
-            self.y_inicio == self.y_fim
-        )
+    def vazia(self) -> bool:
+        # Retorna True se a linha for apenas um ponto
+        return self.x_inicio == self.x_fim and self.y_inicio == self.y_fim
 
     @classmethod   #pertence a classe e nao ao objeto 
     def a_partir_de_pontos(
