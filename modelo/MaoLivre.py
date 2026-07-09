@@ -7,6 +7,20 @@ class MaoLivre(FiguraLinear):
     #lista de pontos (x, y) percorridos pelo mouse
     pontos: list[tuple[float, float]]
 
+    def desenha(self, canvas, dash=()) -> None: #desenha o rabisco no canva
+        if len(self.pontos) > 1: #conta quantos elementos existem pq so um ponto nao tem linha
+            coordenadas = []
+            #lista auxiliar percorrendo todos os pontos
+            for x, y in self.pontos:
+                coordenadas.extend([x, y]) #adiciona varios elementos
+   
+            self.id = canvas.create_line(  # cria linha e salva o id
+                *coordenadas, #desempacotamento, pega os elementos e separa um por um 
+                fill=self.cor,
+                width=2,
+                dash=dash
+            )
+
     def vazia(self) -> bool:
         # Retorna True se o rabisco tiver menos de dois pontos
         return len(self.pontos) < 2
