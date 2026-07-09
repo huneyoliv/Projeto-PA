@@ -7,6 +7,13 @@ from modelo.figura import Figura
 class Circulo(FiguraSolida):
     raio: float
 
+    def desenha(self, canvas, dash=()) -> None:
+        self.id = canvas.create_oval(
+            self.x_inicio - self.raio, self.y_inicio - self.raio,
+            self.x_inicio + self.raio, self.y_inicio + self.raio,
+            outline=self.cor_borda, fill=self.cor_preenchimento, dash=dash
+        )
+
     def vazia(self) -> bool:
         return self.raio < 5
 
