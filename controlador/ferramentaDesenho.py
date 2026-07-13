@@ -76,13 +76,39 @@ class Circulo_Ferramenta(Ferramenta):
         pc = self.visao.cor_preenchimento_var.get() or "black"
     
         self.circulo_atual = Circulo.a_partir_de_centro_e_ponto(event.x, event.y, event.x, event.y, bc, pc)
-
+        pass
+    
     def mouse_arrastado(self, event):
         self.circulo_atual = Circulo.a_partir_de_centro_e_ponto(self.circulo_atual.x_centro, self.circulo_atual.y_centro, event.x, event.y, self.circulo_atual.cor_borda, self.circulo_atual.cor_preenchimento)
         self.desenho.desenha_figuras(self.canvas)
         self.circulo_atual.desenha(self.canvas, dash=(4, 2))
+        pass
 
     def mouse_solto(self, event):
         if not self.circulo_atual.vazia():
             self.desenho.adiciona_figura(self.circulo_atual)
+        self.desenho.desenha_figuras(self.canvas)
+        pass
+
+# Ferramenta Retângulo
+
+@dataclass
+class Retangulo_Ferramenta(Ferramenta):
+    retangulo_atual : 'Retangulo' = None
+
+    def mouse_pressionado(self, event):
+        
+        bc = self.visao.cor_borda_var.get() or "black"
+        pc = self.visao.cor_preenchimento_var.get() or "black"
+        self.retangulo_atual = Retangulo(event.x, event.y, bc, pc, event.x, event.y)
+
+    def mouse_arrastado(self, event):
+        
+        self.retangulo_atual = Retangulo(self.retangulo_atual.x1, self.retangulo_atual.y1, self.retangulo_atual.cor_borda, self.retangulo_atual.cor_preenchimento, event.x, event.y)
+        self.desenho.desenha_figuras(self.canvas) 
+        self.retangulo_atual.desenha(self.canvas, dash=(4, 2)) 
+
+    def mouse_solto(self, event):
+        if not self.retangulo_atual.vazia():
+            self.desenho.adiciona_figura(self.retangulo_atual)
         self.desenho.desenha_figuras(self.canvas)
