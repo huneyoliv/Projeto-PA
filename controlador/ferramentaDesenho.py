@@ -133,3 +133,25 @@ class Oval_Ferramenta(Ferramenta):
         if not self.oval_atual.vazia():
             self.desenho.adiciona_figura(self.oval_atual)
         self.desenho.desenha_figuras(self.canvas)
+
+# Ferramenta Círculo
+
+@dataclass
+class Circulo_Ferramenta(Ferramenta):
+    circulo_atual : 'Circulo' = None
+
+    def mouse_pressionado(self, event):
+        bc = self.visao.cor_borda_var.get() or "black"
+        pc = self.visao.cor_preenchimento_var.get() or "black"
+        
+        self.circulo_atual = Circulo.a_partir_de_centro_e_ponto(event.x, event.y, event.x, event.y, bc, pc)
+
+    def mouse_arrastado(self, event):
+        self.circulo_atual = Circulo.a_partir_de_centro_e_ponto(self.circulo_atual.x_centro, self.circulo_atual.y_centro, event.x, event.y, self.circulo_atual.cor_borda, self.circulo_atual.cor_preenchimento)
+        self.desenho.desenha_figuras(self.canvas)
+        self.circulo_atual.desenha(self.canvas, dash=(4, 2))
+
+    def mouse_solto(self, event):
+        if not self.circulo_atual.vazia():
+            self.desenho.adiciona_figura(self.circulo_atual)
+        self.desenho.desenha_figuras(self.canvas)
