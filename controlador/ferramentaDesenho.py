@@ -112,3 +112,24 @@ class Retangulo_Ferramenta(Ferramenta):
         if not self.retangulo_atual.vazia():
             self.desenho.adiciona_figura(self.retangulo_atual)
         self.desenho.desenha_figuras(self.canvas)
+
+# Ferramenta Oval
+
+@dataclass
+class Oval_Ferramenta(Ferramenta):
+    oval_atual : 'Oval' = None
+
+    def mouse_pressionado(self, event):
+        bc = self.visao.cor_borda_var.get() or "black"
+        pc = self.visao.cor_preenchimento_var.get() or "black"
+        self.oval_atual = Oval(event.x, event.y, bc, pc, event.x, event.y)
+
+    def mouse_arrastado(self, event):
+        self.oval_atual = Oval(self.oval_atual.x1, self.oval_atual.y1, self.oval_atual.cor_borda, self.oval_atual.cor_preenchimento, event.x, event.y)
+        self.desenho.desenha_figuras(self.canvas)
+        self.oval_atual.desenha(self.canvas, dash=(4, 2))
+
+    def mouse_solto(self, event):
+        if not self.oval_atual.vazia():
+            self.desenho.adiciona_figura(self.oval_atual)
+        self.desenho.desenha_figuras(self.canvas)
