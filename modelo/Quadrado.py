@@ -26,7 +26,7 @@ class Quadrado(FiguraSolida):
 
         x_fim = x_inicio + lado * direcao_x #coordenadas 
         y_fim = y_inicio + lado * direcao_y
-        return cls(x_inicio,  #criacao do objeto 
+        return cls(x_inicio, y_inicio, #criacao do objeto 
                    cor_borda,
                    cor_preenchimento,
                    x_fim,
