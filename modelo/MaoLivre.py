@@ -7,19 +7,36 @@ class MaoLivre(FiguraLinear):
     #lista de pontos (x, y) percorridos pelo mouse
     pontos: list[tuple[float, float]]
 
-    def desenha(self, canvas, dash=()) -> None: #desenha o rabisco no canva
+    def desenha(self, canvas, dash=(), width=None) -> None: #desenha o rabisco no canva
         if len(self.pontos) > 1: #conta quantos elementos existem pq so um ponto nao tem linha
             coordenadas = []
             #lista auxiliar percorrendo todos os pontos
             for x, y in self.pontos:
                 coordenadas.extend([x, y]) #adiciona varios elementos
    
+            w = width if width is not None else 2
             self.id = canvas.create_line(  # cria linha e salva o id
                 *coordenadas, #desempacotamento, pega os elementos e separa um por um 
                 fill=self.cor,
-                width=2,
+                width=w,
                 dash=dash
             )
+
+    def contem(self, px: float, py: float) -> bool:
+        # Verifica se o clique do mouse esta proximo de qualquer segmento da linha livre
+        from modelo.figura import distancia_ponto_segmento
+        return any(
+            distancia_ponto_segmento(x1, y1, x2, y2, px, py) <= 3
+            for (x1, y1), (x2, y2) in zip(self.pontos, self.pontos[1:])
+        )
+
+    def mover(self, dx: float, dy: float) -> None:
+        # Move a mao livre e todos os seus pontos acumulados
+        self.x_inicio += dx
+        self.y_inicio += dy
+        for i in range(len(self.pontos)):
+            x, y = self.pontos[i]
+            self.pontos[i] = (x + dx, y + dy)
 
     def vazia(self) -> bool:
         # Retorna True se o rabisco tiver menos de dois pontos

@@ -7,12 +7,22 @@ from modelo.figura import Figura
 class Circulo(FiguraSolida):
     raio: float
 
-    def desenha(self, canvas, dash=()) -> None:
+    def desenha(self, canvas, dash=(), width=None) -> None:
+        w = width if width is not None else 1
         self.id = canvas.create_oval(
             self.x_inicio - self.raio, self.y_inicio - self.raio,
             self.x_inicio + self.raio, self.y_inicio + self.raio,
-            outline=self.cor_borda, fill=self.cor_preenchimento, dash=dash
+            outline=self.cor_borda, fill=self.cor_preenchimento, width=w, dash=dash
         )
+
+    def contem(self, px: float, py: float) -> bool:
+        # Ponto esta dentro do circulo se a distancia ao centro for menor ou igual ao raio
+        return Figura.calcular_distancia(self.x_inicio, self.y_inicio, px, py) <= self.raio
+
+    def mover(self, dx: float, dy: float) -> None:
+        # Move o circulo transladando apenas o seu centro
+        self.x_inicio += dx
+        self.y_inicio += dy
 
     def vazia(self) -> bool:
         return self.raio < 5
