@@ -2,9 +2,12 @@ from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
 
+from modelo import MaoLivre
+from modelo.borracha import Borracha
 from modelo.retangulo import Retangulo
 from modelo.oval import Oval
 from modelo.circulo import Circulo
+from modelo.borracha import Borracha
 # (Eline adicione os imports seus aq depois: Linha, Quadrado, etc)
 
 # Classe Base (O Molde do Professor)
@@ -154,4 +157,24 @@ class Circulo_Ferramenta(Ferramenta):
     def mouse_solto(self, event):
         if not self.circulo_atual.vazia():
             self.desenho.adiciona_figura(self.circulo_atual)
+        self.desenho.desenha_figuras(self.canvas)
+
+# Ferramenta Borracha
+
+@dataclass
+class Borracha_Ferramenta(Ferramenta):
+    borracha_atual : 'Borracha' = None
+
+    def mouse_pressionado(self, event):
+        # Cria a borracha passando a coordenada inicial x_inicio e y_inicio exigidos pela classe mãe Figura
+        self.borracha_atual = Borracha(x_inicio=event.x, y_inicio=event.y, pontos=[(event.x, event.y)]) 
+
+    def mouse_arrastado(self, event):
+        self.borracha_atual.pontos.append((event.x, event.y))
+        self.desenho.desenha_figuras(self.canvas)
+        self.borracha_atual.desenha(self.canvas)
+
+    def mouse_solto(self, event):
+        if not self.borracha_atual.vazia():
+            self.desenho.adiciona_figura(self.borracha_atual)
         self.desenho.desenha_figuras(self.canvas)
