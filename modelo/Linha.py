@@ -8,16 +8,29 @@ class Linha(FiguraLinear):#herda da classe mae FiguraLinear
     x_fim: float
     y_fim: float
 
-    def desenha(self, canvas, dash=()) -> None: #pra criar figuras dentro canvas
+    def desenha(self, canvas, dash=(), width=None) -> None: #pra criar figuras dentro canvas
+        w = width if width is not None else 2
         self.id = canvas.create_line(  #id ajuda a registrar e achar rapido
             self.x_inicio, #ponto inicial
             self.y_inicio,
             self.x_fim,   #ponto final
             self.y_fim,
             fill=self.cor,
-            width=2,
+            width=w,
             dash=dash  #desenha linhas tracejadas
         )
+
+    def contem(self, px: float, py: float) -> bool:
+        # Retorna True se o ponto (px, py) estiver a ate 3 pixels de distancia da linha
+        from modelo.figura import distancia_ponto_segmento
+        return distancia_ponto_segmento(self.x_inicio, self.y_inicio, self.x_fim, self.y_fim, px, py) <= 3
+
+    def mover(self, dx: float, dy: float) -> None:
+        # Move a linha adicionando dx e dy aos pontos de inicio e fim
+        self.x_inicio += dx
+        self.y_inicio += dy
+        self.x_fim += dx
+        self.y_fim += dy
 
     def vazia(self) -> bool:
         # Retorna True se a linha for apenas um ponto ou muito curta

@@ -1,16 +1,16 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
-
-from modelo import MaoLivre
+from modelo.MaoLivre import MaoLivre
 from modelo.borracha import Borracha
 from modelo.retangulo import Retangulo
 from modelo.oval import Oval
 from modelo.circulo import Circulo
 from modelo.borracha import Borracha
-# (Eline adicione os imports seus aq depois: Linha, Quadrado, etc)
+from modelo.Linha import Linha
+from modelo.Quadrado import Quadrado
 
-# Classe Base (O Molde do Professor)
+# Classe Base 
 @dataclass
 class Ferramenta(ABC):
     visao: any
@@ -29,7 +29,7 @@ class Ferramenta(ABC):
     def mouse_solto(self, event):
         pass
 
-# Ferramenta Retângulo (Sua parte)
+# Ferramenta Retângulo 
 @dataclass
 class Retangulo_Ferramenta(Ferramenta):
     retangulo_atual : 'Retangulo' = None
@@ -49,7 +49,7 @@ class Retangulo_Ferramenta(Ferramenta):
             self.desenho.adiciona_figura(self.retangulo_atual)
         self.desenho.desenha_figuras(self.canvas)
 
-# Ferramenta Oval (Sua parte)
+# Ferramenta Oval 
 @dataclass
 class Oval_Ferramenta(Ferramenta):
     oval_atual : 'Oval' = None
@@ -69,7 +69,7 @@ class Oval_Ferramenta(Ferramenta):
             self.desenho.adiciona_figura(self.oval_atual)
         self.desenho.desenha_figuras(self.canvas)
 
-# Ferramenta Círculo (Sua parte)
+# Ferramenta Círculo
 @dataclass
 class Circulo_Ferramenta(Ferramenta):
     circulo_atual : 'Circulo' = None
@@ -177,4 +177,69 @@ class Borracha_Ferramenta(Ferramenta):
     def mouse_solto(self, event):
         if not self.borracha_atual.vazia():
             self.desenho.adiciona_figura(self.borracha_atual)
+
+            self.desenho.desenha_figuras(self.canvas)
+
+# Ferramenta Linha
+
+@dataclass
+class Linha_Ferramenta(Ferramenta):
+    linha_atual: 'Linha' = None
+
+    def mouse_pressionado(self, event):
+        bc = self.visao.cor_borda_var.get() or "black"
+       
+        self.linha_atual = Linha(event.x, event.y, bc, event.x, event.y)
+
+    def mouse_arrastado(self, event):
+        self.linha_atual = Linha(self.linha_atual.x1, self.linha_atual.y1, self.linha_atual.cor_borda, event.x, event.y)
+        self.desenho.desenha_figuras(self.canvas)
+        self.linha_atual.desenha(self.canvas, dash=(4, 2))
+
+    def mouse_solto(self, event):
+        if not self.linha_atual.vazia():
+            self.desenho.adiciona_figura(self.linha_atual)
+        self.desenho.desenha_figuras(self.canvas)
+
+
+# Ferramenta Quadrado
+
+class Quadrado_Ferramenta(Ferramenta):
+    quadrado_atual: 'Quadrado' = None
+
+    def mouse_pressionado(self, event):
+        bc = self.visao.cor_borda_var.get() or "black"
+        pc = self.visao.cor_preenchimento_var.get() or "black"
+        self.quadrado_atual = Quadrado(event.x, event.y, bc, pc, event.x, event.y)
+
+    def mouse_arrastado(self, event):
+        
+        self.quadrado_atual = Quadrado(self.quadrado_atual.x1, self.quadrado_atual.y1, self.quadrado_atual.cor_borda, self.quadrado_atual.cor_preenchimento, event.x, event.y)
+        self.desenho.desenha_figuras(self.canvas)
+        self.quadrado_atual.desenha(self.canvas, dash=(4, 2))
+
+    def mouse_solto(self, event):
+        if not self.quadrado_atual.vazia():
+            self.desenho.adiciona_figura(self.quadrado_atual)
+        self.desenho.desenha_figuras(self.canvas)
+
+
+# Ferramenta Mão Livre (Rabisco)
+
+class MaoLivre_Ferramenta(Ferramenta):
+    maolivre_atual: 'MaoLivre' = None
+
+    def mouse_pressionado(self, event):
+        bc = self.visao.cor_borda_var.get() or "black"
+        
+        self.maolivre_atual = MaoLivre([(event.x, event.y)], cor_borda=bc, espessura=2)
+
+    def mouse_arrastado(self, event):
+        self.maolivre_atual.pontos.append((event.x, event.y))
+        self.desenho.desenha_figuras(self.canvas)
+        self.maolivre_atual.desenha(self.canvas) 
+
+    def mouse_solto(self, event):
+        if len(self.maolivre_atual.pontos) > 1:
+            self.desenho.adiciona_figura(self.maolivre_atual)
         self.desenho.desenha_figuras(self.canvas)
