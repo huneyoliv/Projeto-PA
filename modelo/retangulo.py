@@ -30,3 +30,16 @@ class Retangulo(FiguraSolida):
     def vazia(self) -> bool:
         # Retorna True se for um ponto ou uma linha simples
         return abs(self.x_fim - self.x_inicio) < 5 or abs(self.y_fim - self.y_inicio) < 5
+
+def contem(self, px: float, py: float) -> bool:
+    # Verifica se o ponto clicado esta dentro do retangulo
+    min_x, max_x = min(self.x_inicio, self.x1), max(self.x_inicio, self.x1)
+    min_y, max_y = min(self.y_inicio, self.y1), max(self.y_inicio, self.y1)
+    return min_x <= px <= max_x and min_y <= py <= max_y
+
+def mover(self, dx: float, dy: float) -> None:
+    # Move o retangulo transladando seus cantos
+    self.x_inicio += dx
+    self.y_inicio += dy
+    self.x1 += dx
+    self.y1 += dy
