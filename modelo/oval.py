@@ -34,3 +34,19 @@ class Oval(FiguraSolida):
     def vazia(self) -> bool:
         # Retorna True se não possuir largura ou altura válidas
         return abs(self.x_fim - self.x_inicio) < 5 or abs(self.y_fim - self.y_inicio) < 5
+
+def contem(self, px: float, py: float) -> bool:
+    
+    cx = (self.x_inicio + self.x1) / 2
+    cy = (self.y_inicio + self.y1) / 2
+    rx = abs(self.x1 - self.x_inicio) / 2
+    ry = abs(self.y1 - self.y_inicio) / 2
+    if rx == 0 or ry == 0:
+        return False
+    return ((px - cx)**2 / rx**2) + ((py - cy)**2 / ry**2) <= 1.0
+
+def mover(self, dx: float, dy: float) -> None:
+    self.x_inicio += dx
+    self.y_inicio += dy
+    self.x1 += dx
+    self.y1 += dy
