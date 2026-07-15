@@ -53,3 +53,14 @@ class Linha(FiguraLinear):#herda da classe mae FiguraLinear
             x_fim=x_fim,
             y_fim=y_fim
         )
+    
+def contem(self, px: float, py: float) -> bool:
+    from modelo.figura import distancia_ponto_segmento
+    dist = distancia_ponto_segmento(self.x_inicio, self.y_inicio, self.x1, self.y1, px, py)
+    return dist <= 5.0
+
+def mover(self, dx: float, dy: float) -> None:
+    self.x_inicio += dx
+    self.y_inicio += dy
+    self.x1 += dx
+    self.y1 += dy

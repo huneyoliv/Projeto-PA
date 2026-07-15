@@ -59,3 +59,19 @@ class MaoLivre(FiguraLinear):
             cor=cor,
             pontos=[(x_inicio, y_inicio)]
         )
+    
+def contem(self, px: float, py: float) -> bool:
+    from modelo.figura import distancia_ponto_segmento
+    for i in range(len(self.pontos) - 1):
+        p1 = self.pontos[i]
+        p2 = self.pontos[i + 1]
+        dist = distancia_ponto_segmento(p1[0], p1[1], p2[0], p2[1], px, py)
+        if dist <= 5.0:
+            return True
+    return False
+
+def mover(self, dx: float, dy: float) -> None:
+    novos_pontos = []
+    for x, y in self.pontos:
+        novos_pontos.append((x + dx, y + dy))
+    self.pontos = novos_pontos

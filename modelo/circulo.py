@@ -35,3 +35,15 @@ class Circulo(FiguraSolida):
             cor_borda=cor_borda, cor_preenchimento=cor_preenchimento,
             raio=raio_calculado
         )
+
+def contem(self, px: float, py: float) -> bool:
+    import math
+    raio = math.sqrt((self.x_ponto - self.x_centro) ** 2 + (self.y_ponto - self.y_centro) ** 2)
+    dist_clique_centro = math.sqrt((px - self.x_centro) ** 2 + (py - self.y_centro) ** 2)
+    return dist_clique_centro <= raio
+
+def mover(self, dx: float, dy: float) -> None:
+    self.x_centro += dx
+    self.y_centro += dy
+    self.x_ponto += dx
+    self.y_ponto += dy
